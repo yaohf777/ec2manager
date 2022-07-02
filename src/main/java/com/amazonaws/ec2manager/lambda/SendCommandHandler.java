@@ -20,7 +20,7 @@ import software.amazon.awssdk.services.ssm.model.CommandStatus;
 import software.amazon.awssdk.services.ssm.model.SendCommandRequest;
 import software.amazon.awssdk.services.ssm.model.SendCommandResponse;
 
-public class SendCommandLambdaHandler extends AbstractLambdaHandler {
+public class SendCommandHandler extends AbstractLambdaHandler {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -90,7 +90,7 @@ public class SendCommandLambdaHandler extends AbstractLambdaHandler {
 
 	public static void main(String[] args) {
 
-		SendCommandLambdaHandler request = new SendCommandLambdaHandler();
+		SendCommandHandler request = new SendCommandHandler();
 		String commandStatus = request.sendCommand();
 		System.out.print("Command Status: " + commandStatus);
 	}

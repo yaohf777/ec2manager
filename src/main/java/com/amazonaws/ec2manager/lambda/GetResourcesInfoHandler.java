@@ -15,7 +15,7 @@ import software.amazon.awssdk.services.ssm.model.DescribeInstanceInformationRequ
 import software.amazon.awssdk.services.ssm.model.InstanceInformation;
 import software.amazon.awssdk.services.ssm.model.SsmException;
 
-public class GetResourcesInfoLambdaHandler extends AbstractLambdaHandler {
+public class GetResourcesInfoHandler extends AbstractLambdaHandler {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -53,7 +53,7 @@ public class GetResourcesInfoLambdaHandler extends AbstractLambdaHandler {
 	
 	public static void main(String[] args) {
 
-		GetResourcesInfoLambdaHandler request = new GetResourcesInfoLambdaHandler();
+		GetResourcesInfoHandler request = new GetResourcesInfoHandler();
 		String jsonString = request.getInstancesInfoJson();
 		System.out.println(jsonString);
 	}
