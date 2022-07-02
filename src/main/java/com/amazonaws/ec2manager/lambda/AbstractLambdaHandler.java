@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.ec2manager;
+package com.amazonaws.ec2manager.lambda;
 
 import java.io.BufferedWriter;
 import java.io.OutputStream;
@@ -9,10 +9,10 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazonaws.lambda.ec2manager.utility.CommonUtility;
+import com.amazonaws.ec2manager.utility.CommonUtility;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
-public abstract class AbstractLambdaHandler implements RequestStreamHandler{
+public abstract class AbstractLambdaHandler implements RequestStreamHandler {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 

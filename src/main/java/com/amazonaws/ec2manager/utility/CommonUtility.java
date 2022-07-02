@@ -1,4 +1,4 @@
-package com.amazonaws.lambda.ec2manager.utility;
+package com.amazonaws.ec2manager.utility;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

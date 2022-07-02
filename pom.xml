@@ -7,7 +7,7 @@
 	<artifactId>project</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
-	<name>lambda-java</name>
+	<name>EC2 Manager</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,6 +26,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+	    <!-- AWS libraries -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-lambda-java-log4j2</artifactId>
@@ -43,14 +44,19 @@
 				<exclusion>
 					<groupId>org.junit.jupiter</groupId>
 					<artifactId>*</artifactId>
-				</exclusion>				
-			</exclusions>			
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>ssm</artifactId>
 		</dependency>
 		<!-- Other libraries -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>5.3.21</version>
+		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
