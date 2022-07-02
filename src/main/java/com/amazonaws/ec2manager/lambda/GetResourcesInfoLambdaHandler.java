@@ -3,58 +3,57 @@ package com.amazonaws.ec2manager.lambda;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazonaws.ec2manager.utility.CommonUtility;
 import com.amazonaws.services.lambda.runtime.Context;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.DescribeInstanceInformationRequest;
 import software.amazon.awssdk.services.ssm.model.InstanceInformation;
 import software.amazon.awssdk.services.ssm.model.SsmException;
 
-@SuppressWarnings("rawtypes")
 public class GetResourcesInfoLambdaHandler extends AbstractLambdaHandler {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Override
 	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
 
-		HashMap event = CommonUtility.parseJsonString(inputStream, HashMap.class);
-		logger.info("Input event received: {}", convert2Json(event));
+		String inputString = toString(inputStream);
+		logger.info("Input event received: {}", inputString);
 
-		writeOutput(outputStream, getInstancesInfo());
+		// HashMap event = gson.fromJson(inputString, HashMap.class);
+
+		writeOutput(outputStream, getInstancesInfoJson());
 	}
 
-	private List<InstanceInfo> getInstancesInfo() {
+	protected String getInstancesInfoJson() {
 
-		List<InstanceInfo> instanceInfoList = new ArrayList<InstanceInfo>();
+		String jsonStr = null;
 		try (SsmClient ssmClient = getSsmClient();) {
 
 			// describeInstanceProperties -> describeInstanceInformation
 			DescribeInstanceInformationRequest request = DescribeInstanceInformationRequest.builder().maxResults(10)
 					.build();
-			List<InstanceInformation> instanceInformationList = ssmClient.describeInstanceInformation(request)
+			List<InstanceInformation> instanceInfoList = ssmClient.describeInstanceInformation(request)
 					.instanceInformationList();
-			if (instanceInformationList != null) {
-				for (InstanceInformation instanceInformation : instanceInformationList) {
-					instanceInfoList.add(new InstanceInfo(instanceInformation));
-				}
-			} else {
+			if (instanceInfoList == null) {
 				logger.info("No managed nodes found");
+			} else {
+				jsonStr = gson.toJson(instanceInfoList);
 			}
-
 		} catch (SsmException e) {
 
 			logger.error("SsmException occurs: ", e);
 		}
 
-		return instanceInfoList;
+		return jsonStr;
+
 	}
 }

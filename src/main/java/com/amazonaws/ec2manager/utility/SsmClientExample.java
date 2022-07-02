@@ -1,46 +1,15 @@
 
 package com.amazonaws.ec2manager.utility;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.amazonaws.ec2manager.lambda.GetResourcesInfoLambdaHandler;
 
-import com.amazonaws.ec2manager.lambda.AbstractLambdaHandler;
-import com.amazonaws.services.lambda.runtime.Context;
-
-import software.amazon.awssdk.services.ssm.SsmClient;
-import software.amazon.awssdk.services.ssm.model.DescribeInstanceInformationRequest;
-import software.amazon.awssdk.services.ssm.model.InstanceInformation;
-import software.amazon.awssdk.services.ssm.model.SsmException;
-
-public class SsmClientExample extends AbstractLambdaHandler {
+public class SsmClientExample extends GetResourcesInfoLambdaHandler {
 
 	public static void main(String[] args) {
 
 		SsmClientExample request = new SsmClientExample();
-		request.getInstancesInfo();
-	}
-
-	public void getInstancesInfo() {
-
-		try (SsmClient ssmClient = getSsmClient();) {
-
-			// describeInstanceProperties -> describeInstanceInformation
-			DescribeInstanceInformationRequest request = DescribeInstanceInformationRequest.builder().maxResults(10)
-					.build();
-			for (InstanceInformation instanceInfo : ssmClient.describeInstanceInformation(request)
-					.instanceInformationList()) {
-				System.out.println("InstanceInformation: " + instanceInfo);
-			}
-
-		} catch (SsmException e) {
-			System.err.println(e.getMessage());
-		}
-	}
-
-	@Override
-	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
-
+		String jsonString = request.getInstancesInfoJson();
+		System.out.println(jsonString);
 	}
 
 //	private void listInventoryEntries(SsmClient ssmClient) {
