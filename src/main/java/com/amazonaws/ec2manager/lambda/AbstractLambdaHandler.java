@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
@@ -28,7 +30,8 @@ import software.amazon.awssdk.services.ssm.SsmClient;
 public abstract class AbstractLambdaHandler implements RequestStreamHandler {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
+	Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	
 	protected SsmClient getSsmClient() {
 
 		// Replace EnvironmentVariableCredentialsProvider with StaticCredentialsProvider
