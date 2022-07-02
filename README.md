@@ -1,1 +1,1 @@
-# ec2manager
+# EC2 Assignment
