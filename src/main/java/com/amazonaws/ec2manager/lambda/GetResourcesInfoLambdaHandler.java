@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.amazonaws.ec2manager.utility.CommonUtility;
 import com.amazonaws.services.lambda.runtime.Context;
 
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.DescribeInstanceInformationRequest;
 import software.amazon.awssdk.services.ssm.model.InstanceInformation;
@@ -36,11 +34,8 @@ public class GetResourcesInfoLambdaHandler extends AbstractLambdaHandler {
 
 	private List<InstanceInfo> getInstancesInfo() {
 
-		Region region = Region.US_EAST_1;
-
 		List<InstanceInfo> instanceInfoList = new ArrayList<InstanceInfo>();
-		try (SsmClient ssmClient = SsmClient.builder().region(region)
-				.credentialsProvider(EnvironmentVariableCredentialsProvider.create()).build();) {
+		try (SsmClient ssmClient = getSsmClient();) {
 
 			// describeInstanceProperties -> describeInstanceInformation
 			DescribeInstanceInformationRequest request = DescribeInstanceInformationRequest.builder().maxResults(10)

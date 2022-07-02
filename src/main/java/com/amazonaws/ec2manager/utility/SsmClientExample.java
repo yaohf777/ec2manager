@@ -1,42 +1,46 @@
 
 package com.amazonaws.ec2manager.utility;
 
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import com.amazonaws.ec2manager.lambda.AbstractLambdaHandler;
+import com.amazonaws.services.lambda.runtime.Context;
+
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.DescribeInstanceInformationRequest;
 import software.amazon.awssdk.services.ssm.model.InstanceInformation;
 import software.amazon.awssdk.services.ssm.model.SsmException;
 
-public class SsmtExample {
+public class SsmClientExample extends AbstractLambdaHandler {
 
 	public static void main(String[] args) {
 
-		SsmtExample request = new SsmtExample();
-		request.runExample();
+		SsmClientExample request = new SsmClientExample();
+		request.getInstancesInfo();
 	}
 
-	public void runExample() {
+	public void getInstancesInfo() {
 
-		Region region = Region.US_EAST_1;
-
-		try (SsmClient ssmClient = SsmClient.builder().region(region)
-				.credentialsProvider(EnvironmentVariableCredentialsProvider.create()).build();) {
+		try (SsmClient ssmClient = getSsmClient();) {
 
 			// describeInstanceProperties -> describeInstanceInformation
 			DescribeInstanceInformationRequest request = DescribeInstanceInformationRequest.builder().maxResults(10)
 					.build();
-			for (InstanceInformation instanceInfo : ssmClient.describeInstanceInformation(request).instanceInformationList()) {
+			for (InstanceInformation instanceInfo : ssmClient.describeInstanceInformation(request)
+					.instanceInformationList()) {
 				System.out.println("InstanceInformation: " + instanceInfo);
 			}
-
-			// listInventoryEntries(ssmClient);
-			// describeItems(ssmClient);
-			// describeParams(ssmClient);
 
 		} catch (SsmException e) {
 			System.err.println(e.getMessage());
 		}
+	}
+
+	@Override
+	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
+
 	}
 
 //	private void listInventoryEntries(SsmClient ssmClient) {

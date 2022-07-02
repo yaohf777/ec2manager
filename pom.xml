@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.amazonaws.lambda.ec2manager</groupId>
-	<artifactId>project</artifactId>
+	<artifactId>implementation</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 	<name>EC2 Manager</name>
