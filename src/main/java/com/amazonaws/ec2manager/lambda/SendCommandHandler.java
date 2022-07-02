@@ -30,7 +30,7 @@ public class SendCommandHandler extends AbstractLambdaHandler {
 		String inputString = toString(inputStream);
 		logger.info("Input event received: {}", inputString);
 
-		writeOutput(outputStream, "Command executed");
+		writeOutput(outputStream, this.sendCommand());
 	}
 
 	// https://stackoverflow.com/questions/58627387/aws-java-sdk-running-a-command-using-ssm-on-ec2-instances
@@ -80,7 +80,7 @@ public class SendCommandHandler extends AbstractLambdaHandler {
 					|| CommandStatus.IN_PROGRESS.toString().equals(commandStatus));
 
 		} catch (Exception e) {
-			logger.error("SsmException occurs: ", e);
+			logger.error("Exception occurs: ", e);
 			commandStatus = e.getMessage();
 		}
 
