@@ -44,12 +44,11 @@ public class SendCommandHandler extends AbstractLambdaHandler {
 
 		// CommandStatus
 		String commandStatus = "";
+		String instanceId = System.getenv().get("AWS_TARGET_INSTANCE");
 		try (SsmClient ssmClient = getSsmClient();) {
 
-			String instanceId = System.getenv().get("AWS_TARGET_INSTANCE");
-			SendCommandRequest commandRequest = SendCommandRequest.builder()
-					.instanceIds(instanceId).documentName("AWS-RunShellScript")
-					.parameters(params).build();
+			SendCommandRequest commandRequest = SendCommandRequest.builder().instanceIds(instanceId)
+					.documentName("AWS-RunShellScript").parameters(params).build();
 			SendCommandResponse commandResponse = ssmClient.sendCommand(commandRequest);
 			commandStatus = commandResponse.command().statusAsString();
 			String commandId = commandResponse.command().commandId();
@@ -86,8 +85,7 @@ public class SendCommandHandler extends AbstractLambdaHandler {
 			commandStatus = e.getMessage();
 		}
 
-		return commandStatus;
-
+		return "Task execution status on instance( " + instanceId + ") is: " + commandStatus;
 	}
 
 	public static void main(String[] args) {
