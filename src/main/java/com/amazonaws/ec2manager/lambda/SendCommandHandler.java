@@ -46,8 +46,10 @@ public class SendCommandHandler extends AbstractLambdaHandler {
 		String commandStatus = "";
 		try (SsmClient ssmClient = getSsmClient();) {
 
-			SendCommandRequest commandRequest = SendCommandRequest.builder().instanceIds("i-0c2cf0542b9dccbbb")
-					.documentName("AWS-RunShellScript").parameters(params).build();
+			String instanceId = System.getenv().get("AWS_TARGET_INSTANCE");
+			SendCommandRequest commandRequest = SendCommandRequest.builder()
+					.instanceIds(instanceId).documentName("AWS-RunShellScript")
+					.parameters(params).build();
 			SendCommandResponse commandResponse = ssmClient.sendCommand(commandRequest);
 			commandStatus = commandResponse.command().statusAsString();
 			String commandId = commandResponse.command().commandId();
