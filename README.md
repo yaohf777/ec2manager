@@ -3,7 +3,7 @@
 <img src="https://github.com/yaohf777/ec2manager/blob/main/EC2ManagerFlow.png" border="1" alt="EC2 Manager flow"/>
 
 ## Design
-[EC2 Manager design document](https://wiki.wdf.sap.corp/wiki/display/GRCIAGWDF/Getting+Started)
+[EC2 Manager design document](https://github.com/yaohf777/ec2manager/blob/main/EC2%20Manager%20Design.docx)
 
 
 ## Implementation code
