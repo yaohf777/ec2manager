@@ -7,6 +7,8 @@
 
 
 ## Implementation code
-Function one (retrieve resource information) implementation is contained in [GetResourcesInfoHandler.java](https://github.com/yaohf777/ec2manager/blob/main/src/main/java/com/amazonaws/ec2manager/lambda/GetResourcesInfoHandler.java#L32-L51).
+Function one (retrieve resource information) implementation is in [GetResourcesInfoHandler.java](https://github.com/yaohf777/ec2manager/blob/main/src/main/java/com/amazonaws/ec2manager/lambda/GetResourcesInfoHandler.java#L32-L51).
 
-Function two (Run OS layer short task) implementation is contained in [SendCommandHandler.java](https://github.com/yaohf777/ec2manager/blob/main/src/main/java/com/amazonaws/ec2manager/lambda/SendCommandHandler.java#L40-L81).
+Function two (Run OS layer short task) implementation is in [SendCommandHandler.java](https://github.com/yaohf777/ec2manager/blob/main/src/main/java/com/amazonaws/ec2manager/lambda/SendCommandHandler.java#L40-L81).
+
+Step Functions definition is contained in [EC2ManagerStateMachine.json](https://github.com/yaohf777/ec2manager/blob/main/EC2ManagerStateMachine.json).
