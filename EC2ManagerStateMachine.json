@@ -1,0 +1,107 @@
+{
+  "Comment": "EC2 Manager State Machine",
+  "StartAt": "CheckTaskParameter",
+  "States": {
+    "CheckTaskParameter": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.TaskType",
+          "StringEquals": "GetResourcesInfo",
+          "Next": "GetResourcesInfo"
+        },
+        {
+          "Variable": "$.TaskType",
+          "StringEquals": "ExecuteShortTask",
+          "Next": "ExecuteTaskAShort"
+        },
+        {
+          "Variable": "$.TaskType",
+          "StringEquals": "ExecuteLongTask",
+          "Next": "ExecuteTaskBLong"
+        }
+      ],
+      "Default": "Fail"
+    },
+    "Fail": {
+      "Type": "Fail"
+    },
+    "GetResourcesInfo": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:270078487780:function:GetResourcesInfo:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true,
+      "TimeoutSeconds": 60
+    },
+    "ExecuteTaskAShort": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:270078487780:function:ExecuteTaskAShort:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true,
+      "TimeoutSeconds": 90
+    },
+    "ExecuteTaskBLong": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:270078487780:function:ExecuteTaskBLong:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "SendTaskExecutionResult"
+    },
+    "SendTaskExecutionResult": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "Message.$": "$",
+        "TopicArn.$": "$.input.sns.arn"
+      },
+      "End": true
+    }
+  }
+}
