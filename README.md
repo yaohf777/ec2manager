@@ -1,4 +1,4 @@
-# EC2 Assignment
+# AWS EC2 Manager
 
 <img src="https://github.com/yaohf777/ec2manager/blob/main/EC2ManagerFlow.png" border="1" alt="EC2 Manager flow"/>
 
